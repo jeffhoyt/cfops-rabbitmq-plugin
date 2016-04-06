@@ -49,7 +49,7 @@ func TestPluginSetupFailsWhenRabbitIsNotInInstallationSettings(t *testing.T) {
 	cleanTempDirectory(plugin.PivotalCF.GetHostDetails().ArchiveDirectory)
 }
 
-func TestBackupInvokesRabbitClient(t *testing.T) {
+func TestBackupAndRestoreInvokesRabbitClient(t *testing.T) {
 	//body := []byte("{\n  \"gridsize\": 19,\n  \"playerWhite\": \"bob\",\n  \"playerBlack\": \"alfred\"\n}")
 	plugin := setupPlugin("../fixtures/settings-1.6-aws.json")
 	if plugin.Meta.Name != "rabbitmq-tile" {
@@ -61,13 +61,22 @@ func TestBackupInvokesRabbitClient(t *testing.T) {
 	}
 
 	fakeclient := plugin.RabbitClient.(*fakes.FakeRabbitClient)
-	if fakeclient.GetUsersCallCount != 1 {
-		t.Errorf("Rabbit client didn't call get users 1x, called %d\n", fakeclient.GetUsersCallCount)
+	if fakeclient.GetDefinitionsCallCount != 1 {
+		t.Errorf("Rabbit client didn't call get definitions 1x, called %d\n", fakeclient.GetDefinitionsCallCount)
 	}
 
-	usersFile := fmt.Sprintf("%s/%s", plugin.PivotalCF.GetHostDetails().ArchiveDirectory, rabbitUsersFile)
-	if isEmpty(usersFile) {
+	definitionsFile := fmt.Sprintf("%s/%s", plugin.PivotalCF.GetHostDetails().ArchiveDirectory, rabbitDefinitionsFile)
+	if isEmpty(definitionsFile) {
 		t.Errorf("Should have backed up some data from the fake, but did not.")
+	}
+
+	err = plugin.Restore()
+	if err != nil {
+		t.Errorf("Failed during restore: %s\n", err)
+	}
+
+	if fakeclient.PostDefinitionsCallCount != 1 {
+		t.Errorf("Rabbit client didn't POST definitions back during restore, call count %d\n", fakeclient.PostDefinitionsCallCount)
 	}
 
 	cleanTempDirectory(plugin.PivotalCF.GetHostDetails().ArchiveDirectory)

@@ -18,13 +18,8 @@ type RabbitMQPlugin struct {
 // RabbitClient represents the set of functions we need to perform against
 // rabbit to perform backup and restore operations
 type RabbitClient interface {
-	GetUsersFile() (userFile []byte, err error)
-	RestoreUsersFile(userFile []byte) (err error)
-	//GetApiEndpoint() (endpoint string, err error)
-	//GetApiCredentials() (username string, password string, err error)
-
-	//	GetQueuesFile() (queuesFile []byte, err error)
-	//	RestoreQueuesFile(queuesFile []byte) (err error)
+	GetServerDefinitions() (definitionsFile []byte, err error)
+	RestoreDefinitions(definitionsFile []byte) (err error)
 }
 
 // RabbitClientData represents the information required to connect to the Rabbit API

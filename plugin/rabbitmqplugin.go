@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"fmt"
 	"io"
+	"io/ioutil"
 
 	"github.com/pivotalservices/cfbackup"
 	"github.com/pivotalservices/cfops/plugin/cfopsplugin"
@@ -14,7 +15,7 @@ const (
 	productName               = "p-rabbitmq"
 	jobName                   = "rabbitmq-server"
 	serverAdminCredentialsKey = "server_admin_credentials"
-	rabbitUsersFile           = "rabbitmq-users.json"
+	rabbitDefinitionsFile     = "rabbit-definitions.json"
 )
 
 // Backup - method to execute backup
@@ -23,13 +24,19 @@ func (plugin *RabbitMQPlugin) Backup() (err error) {
 	//fmt.Printf("Installation Settings: %v\n", plugin.InstallationSettings)
 	//fmt.Printf("Detected Rabbit API URL %s\n", GetAPIInformationFromInstallationSettings(plugin.InstallationSettings))
 
-	userBytes, err := plugin.RabbitClient.GetUsersFile()
+	definitionBytes, err := plugin.RabbitClient.GetServerDefinitions()
 
-	reader := bytes.NewReader(userBytes)
+	reader := bytes.NewReader(definitionBytes)
 	var writer io.WriteCloser
-	if writer, err = plugin.PivotalCF.NewArchiveWriter(rabbitUsersFile); err == nil {
+	writer, err = plugin.PivotalCF.NewArchiveWriter(rabbitDefinitionsFile)
+	if err == nil {
 		defer writer.Close()
-		_, err = io.Copy(writer, reader)
+		written, err := io.Copy(writer, reader)
+		if err != nil {
+			lo.G.Errorf("Failed to write backup file: %s", err)
+		} else {
+			lo.G.Debug("Wrote %d bytes for backup file.", written)
+		}
 	}
 
 	lo.G.Debug("Completed RabbitMQ backup")
@@ -39,6 +46,16 @@ func (plugin *RabbitMQPlugin) Backup() (err error) {
 // Restore - method to execute Restore
 func (plugin *RabbitMQPlugin) Restore() (err error) {
 	lo.G.Debug("Starting RabbitMQ restore")
+
+	var reader io.ReadCloser
+	if reader, err = plugin.PivotalCF.NewArchiveReader(rabbitDefinitionsFile); err == nil {
+		defer reader.Close()
+		bytes, err := ioutil.ReadAll(reader)
+		if err == nil {
+			lo.G.Debug("Read %d bytes from backup file.", len(bytes))
+			plugin.RabbitClient.RestoreDefinitions(bytes)
+		}
+	}
 	return
 }
 
@@ -68,7 +85,3 @@ func GetAPIInformationFromInstallationSettings(installationSettings cfbackup.Ins
 	}
 	return
 }
-
-/*
-if vmCredentials, err = s.InstallationSettings.FindVMCredentialsByProductAndJob(productName, jobName); err == nil
-*/
