@@ -53,7 +53,10 @@ func (plugin *RabbitMQPlugin) Restore() (err error) {
 		bytes, err := ioutil.ReadAll(reader)
 		if err == nil {
 			lo.G.Debug("Read %d bytes from backup file.", len(bytes))
-			plugin.RabbitClient.RestoreDefinitions(bytes)
+			err = plugin.RabbitClient.RestoreDefinitions(bytes)
+			if err != nil {
+				lo.G.Errorf("Failed to restore definitions to rabbit: %s\n", err.Error())
+			}
 		}
 	}
 	return

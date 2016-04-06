@@ -28,11 +28,13 @@ func setupPlugin(installationSettingsPath string) (rabbitplugin *plugin.RabbitMQ
 		ArchiveDirectory: controlTmpDir,
 	})
 	rabbitplugin.PivotalCF.GetInstallationSettings()
-	clientData, err := plugin.GetAPIInformationFromInstallationSettings(rabbitplugin.InstallationSettings)
-	if err != nil {
-		fmt.Printf("Error getting API information!! %s\n", err)
+	clientData := &plugin.RabbitClientData{
+		URL:      "fix",
+		Username: "fix",
+		Password: "fix",
 	}
-	rabbitplugin.RabbitClient = &clientData
+
+	rabbitplugin.RabbitClient = clientData
 	rabbitplugin.Setup(pivotalCF)
 	return
 }
