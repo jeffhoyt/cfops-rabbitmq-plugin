@@ -2,39 +2,41 @@ package integrations_test
 
 import (
 	"fmt"
-	"io/ioutil"
+	"os"
 	"testing"
 
-	"github.com/pivotalservices/cfbackup"
 	plugin "github.com/pivotalservices/cfops-rabbitmq-plugin/plugin"
-	"github.com/pivotalservices/cfops/plugin/cfopsplugin"
-	"github.com/pivotalservices/cfops/tileregistry"
 )
 
 func TestIntegration(t *testing.T) {
 	fmt.Println("placeholder")
 
+	rabbitclient := setupClient()
+	definitionsBytes, err := rabbitclient.GetServerDefinitions()
+
+	if err != nil {
+		t.Errorf("Failed to download server definitions: %s\n", err.Error())
+		return
+	}
+
+	fmt.Printf("Downloaded %d bytes.\n", len(definitionsBytes))
+
+	err = rabbitclient.RestoreDefinitions(definitionsBytes)
+	if err != nil {
+		t.Errorf("Failed to restore server definitions: %s\n", err.Error())
+	}
+
 }
 
-func setupPlugin(installationSettingsPath string) (rabbitplugin *plugin.RabbitMQPlugin) {
-	controlTmpDir, _ := ioutil.TempDir("", "unit-test")
-	rabbitplugin = &plugin.RabbitMQPlugin{
-		Meta: cfopsplugin.Meta{
-			Name: "rabbitmq-tile",
-		},
-	}
-	configParser := cfbackup.NewConfigurationParser(installationSettingsPath)
-	pivotalCF := cfopsplugin.NewPivotalCF(configParser.InstallationSettings, tileregistry.TileSpec{
-		ArchiveDirectory: controlTmpDir,
-	})
-	rabbitplugin.PivotalCF.GetInstallationSettings()
-	clientData := &plugin.RabbitClientData{
-		URL:      "fix",
-		Username: "fix",
-		Password: "fix",
-	}
+func setupClient() (client *plugin.RabbitClientData) {
 
-	rabbitplugin.RabbitClient = clientData
-	rabbitplugin.Setup(pivotalCF)
+	rabbitHost := os.Getenv("RABBITMQ_PORT_15672_TCP_ADDR")
+	rabbitAdminURL := fmt.Sprintf("http://%s:15672/api/", rabbitHost)
+	client = &plugin.RabbitClientData{
+		URL:      rabbitAdminURL,
+		Username: "guest",
+		Password: "guest",
+	}
+	fmt.Printf("Rabbit client set up for host %s\n", rabbitHost)
 	return
 }

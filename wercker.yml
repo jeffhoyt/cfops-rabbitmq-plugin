@@ -1,7 +1,7 @@
 box: golang
 
 services:
-  - rabbitmq:3
+  - rabbitmq:3-management
 
 build:
 
