@@ -9,8 +9,6 @@ import (
 )
 
 func TestIntegration(t *testing.T) {
-	fmt.Println("placeholder")
-
 	rabbitclient := setupClient()
 	definitionsBytes, err := rabbitclient.GetServerDefinitions()
 
