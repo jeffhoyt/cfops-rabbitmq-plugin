@@ -1,9 +1,6 @@
 {
 	"ImportPath": "github.com/pivotalservices/cfops-rabbitmq-plugin",
 	"GoVersion": "go1.6",
-	"Packages": [
-		"./..."
-	],
 	"Deps": [
 		{
 			"ImportPath": "github.com/cloudfoundry-community/go-cfenv",
@@ -28,7 +25,8 @@
 		},
 		{
 			"ImportPath": "github.com/op/go-logging",
-			"Rev": "dfaf3dff9b631bc4236201d90d41ee0de9202889"
+			"Comment": "v1-7-g970db52",
+			"Rev": "970db520ece77730c7e4724c61121037378659d9"
 		},
 		{
 			"ImportPath": "github.com/pivotal-golang/lager",
@@ -36,23 +34,23 @@
 		},
 		{
 			"ImportPath": "github.com/pivotalservices/cfbackup",
-			"Comment": "v0.1.0-164-g710c64e",
-			"Rev": "710c64ec44dc9d87b9c59fba093be53a2bcba7a5"
+			"Comment": "v0.1.0-166-g1a52b06",
+			"Rev": "1a52b0637c2103523d8342177ea188346f554941"
 		},
 		{
 			"ImportPath": "github.com/pivotalservices/cfbackup/tiles/opsmanager",
-			"Comment": "v0.1.0-164-g710c64e",
-			"Rev": "710c64ec44dc9d87b9c59fba093be53a2bcba7a5"
+			"Comment": "v0.1.0-166-g1a52b06",
+			"Rev": "1a52b0637c2103523d8342177ea188346f554941"
 		},
 		{
 			"ImportPath": "github.com/pivotalservices/cfops/plugin/cfopsplugin",
-			"Comment": "v2.2.0-1-g66cdf51",
-			"Rev": "66cdf5198f55357e6f6362b902f0aa9d438902a8"
+			"Comment": "v2.2.0-5-g80bacd3",
+			"Rev": "80bacd34cca55ea47ea4f08dc08694f5efc70248"
 		},
 		{
 			"ImportPath": "github.com/pivotalservices/cfops/tileregistry",
-			"Comment": "v2.2.0-1-g66cdf51",
-			"Rev": "66cdf5198f55357e6f6362b902f0aa9d438902a8"
+			"Comment": "v2.2.0-5-g80bacd3",
+			"Rev": "80bacd34cca55ea47ea4f08dc08694f5efc70248"
 		},
 		{
 			"ImportPath": "github.com/pivotalservices/gtils/bosh",
@@ -110,11 +108,11 @@
 		},
 		{
 			"ImportPath": "github.com/xchapter7x/goutil",
-			"Rev": "ae6b732e91c5efae7c109e70bed2551d1c60de0e"
+			"Rev": "046742e03686eda64c6ac938594120d7fb5b3ecc"
 		},
 		{
 			"ImportPath": "github.com/xchapter7x/goutil/itertools",
-			"Rev": "ae6b732e91c5efae7c109e70bed2551d1c60de0e"
+			"Rev": "046742e03686eda64c6ac938594120d7fb5b3ecc"
 		},
 		{
 			"ImportPath": "github.com/xchapter7x/lo",

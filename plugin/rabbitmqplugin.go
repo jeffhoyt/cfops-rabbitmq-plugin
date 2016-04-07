@@ -35,7 +35,7 @@ func (plugin *RabbitMQPlugin) Backup() (err error) {
 		if err != nil {
 			lo.G.Errorf("Failed to write backup file: %s", err)
 		} else {
-			lo.G.Debug("Wrote %d bytes for backup file.", written)
+			lo.G.Debugf("Wrote %d bytes for backup file.", written)
 		}
 	}
 
@@ -52,7 +52,7 @@ func (plugin *RabbitMQPlugin) Restore() (err error) {
 		defer reader.Close()
 		bytes, err := ioutil.ReadAll(reader)
 		if err == nil {
-			lo.G.Debug("Read %d bytes from backup file.", len(bytes))
+			lo.G.Debugf("Read %d bytes from backup file.", len(bytes))
 			err = plugin.RabbitClient.RestoreDefinitions(bytes)
 			if err != nil {
 				lo.G.Errorf("Failed to restore definitions to rabbit: %s\n", err.Error())
@@ -69,8 +69,14 @@ func (plugin *RabbitMQPlugin) GetMeta() cfopsplugin.Meta {
 
 //Setup -- Pass in the installation information
 func (plugin *RabbitMQPlugin) Setup(pcf cfopsplugin.PivotalCF) (err error) {
+	lo.G.Debug("Setting up plugin...")
 	plugin.PivotalCF = pcf
 	plugin.InstallationSettings = pcf.GetInstallationSettings()
+	if plugin.RabbitClient == nil {
+		clientData, _ := GetAPIInformationFromInstallationSettings(plugin.InstallationSettings)
+		lo.G.Debugf("** Setting Rabbit Client %s\n", clientData.URL)
+		plugin.RabbitClient = &clientData
+	}
 	return
 }
 

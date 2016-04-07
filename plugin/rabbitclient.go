@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+
+	"github.com/xchapter7x/lo"
 )
 
 // GetServerDefinitions retrieves definitions from the server
@@ -20,7 +22,7 @@ func (cd *RabbitClientData) RestoreDefinitions(definitionsFile []byte) (err erro
 }
 
 func doPost(URL string, username string, password string, body []byte) (err error) {
-	fmt.Printf("About to POST %s\n", URL)
+	lo.G.Debugf("About to POST %s\n", URL)
 	httpclient := &http.Client{}
 
 	req, _ := http.NewRequest("POST", URL, bytes.NewReader(body))
@@ -34,7 +36,7 @@ func doPost(URL string, username string, password string, body []byte) (err erro
 	}
 
 	if err != nil {
-		fmt.Println("Errored when posting request to the server")
+		lo.G.Error("Errored when posting request to the server")
 		return
 	}
 
@@ -42,7 +44,7 @@ func doPost(URL string, username string, password string, body []byte) (err erro
 }
 
 func doGet(URL string, username string, password string) (results []byte, err error) {
-	fmt.Printf("About to GET %s\n", URL)
+	lo.G.Debugf("About to GET %s\n", URL)
 	httpclient := &http.Client{}
 
 	req, _ := http.NewRequest("GET", URL, nil)
