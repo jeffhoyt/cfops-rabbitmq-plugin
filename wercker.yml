@@ -88,7 +88,7 @@ deploy:
     - github-create-release:
         token: $GITHUB_TOKEN
         tag: $WERCKER_GITHUB_CREATE_RELEASE_ID
-        title: CFOPS-MYSQL-PLUGIN $WERCKER_GITHUB_CREATE_RELEASE_ID
+        title: CF Ops RabbitMQ Plugin $WERCKER_GITHUB_CREATE_RELEASE_ID
         draft: $RELEASE_DRAFT
 
     - github-upload-asset:
