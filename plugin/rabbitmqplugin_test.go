@@ -8,9 +8,9 @@ import (
 	"testing"
 
 	"github.com/pivotalservices/cfbackup"
+	"github.com/pivotalservices/cfbackup/tileregistry"
 	fakes "github.com/pivotalservices/cfops-rabbitmq-plugin/fakes"
 	"github.com/pivotalservices/cfops/plugin/cfopsplugin"
-	"github.com/pivotalservices/cfops/tileregistry"
 )
 
 var (

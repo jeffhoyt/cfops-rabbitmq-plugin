@@ -10,8 +10,8 @@ import (
 
 	"github.com/hashicorp/go-plugin"
 	"github.com/pivotalservices/cfbackup"
+	"github.com/pivotalservices/cfbackup/tileregistry"
 	"github.com/pivotalservices/cfbackup/tiles/opsmanager"
-	"github.com/pivotalservices/cfops/tileregistry"
 	"github.com/xchapter7x/lo"
 )
 
@@ -22,20 +22,31 @@ var DefaultCmdBuilder BuildCmd = func(filePath string, args string) *exec.Cmd {
 	return exec.Command(filePath, arguments...)
 }
 
+//Close Let the client kill the method
+func (clientCloser *ClientCloser) Close() {
+	clientCloser.Client.Kill()
+}
+
 //New - method to create a plugin tile
-func (s *PluginTileBuilder) New(tileSpec tileregistry.TileSpec) (tile tileregistry.Tile, err error) {
+func (s *PluginTileBuilder) New(tileSpec tileregistry.TileSpec) (tileCloser tileregistry.TileCloser, err error) {
 	var opsManager *opsmanager.OpsManager
 	var settingsReader io.Reader
-	opsManager, err = opsmanager.NewOpsManager(tileSpec.OpsManagerHost, tileSpec.AdminUser, tileSpec.AdminPass, tileSpec.OpsManagerUser, tileSpec.OpsManagerPass, tileSpec.ArchiveDirectory, tileSpec.CryptKey)
+	opsManager, err = opsmanager.NewOpsManager(tileSpec.OpsManagerHost, tileSpec.AdminUser, tileSpec.AdminPass, tileSpec.OpsManagerUser, tileSpec.OpsManagerPass, tileSpec.OpsManagerPassphrase, tileSpec.ArchiveDirectory, tileSpec.CryptKey)
 
 	if settingsReader, err = opsManager.GetInstallationSettings(); err == nil {
 		var brPlugin BackupRestorer
 		installationSettings := cfbackup.NewConfigurationParserFromReader(settingsReader)
 		pcf := NewPivotalCF(installationSettings.InstallationSettings, tileSpec)
 		lo.G.Debug("", s.Meta.Name, s.FilePath, pcf)
-		brPlugin, _ = s.call(tileSpec)
+		brPlugin, client := s.call(tileSpec)
 		brPlugin.Setup(pcf)
-		tile = brPlugin
+		tileCloser = struct {
+			tileregistry.Tile
+			tileregistry.Closer
+		}{
+			brPlugin,
+			&ClientCloser{Client: client},
+		}
 	}
 	lo.G.Debug("error from getinstallationsettings: ", err)
 	return

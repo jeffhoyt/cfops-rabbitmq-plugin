@@ -1,0 +1,8 @@
+package: github.com/pivotalservices/cfops-rabbitmq-plugin
+import:
+- package: github.com/pivotalservices/cfbackup
+- package: github.com/pivotalservices/cfops
+  subpackages:
+  - plugin/cfopsplugin
+- package: github.com/xchapter7x/lo
+- package: gopkg.in/yaml.v1

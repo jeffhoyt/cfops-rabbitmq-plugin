@@ -1,0 +1,61 @@
+hash: dec94b37bfeaa1b1d5772b9f23b6b0e261c70370b3247eb2e6176e055b8644c0
+updated: 2016-04-28T09:39:55.306601376-07:00
+imports:
+- name: github.com/cloudfoundry-community/go-cfenv
+  version: b4bebec47a425334d2a076cf99329464c9e611f3
+- name: github.com/kr/fs
+  version: 2788f0dbd16903de03cb8186e5c7d97b69ad387b
+- name: github.com/mitchellh/mapstructure
+  version: 740c764bc6149d3f1806231418adb9f52c11bcbf
+- name: github.com/onsi/ginkgo
+  version: 2c2e9bb47b4e44067024f29339588cac8b34dd12
+- name: github.com/onsi/gomega
+  version: 835b5e4242c715976b98ed6bc6ece1d9c7879f66
+  subpackages:
+  - ghttp
+  - types
+  - internal/assertion
+  - internal/asyncassertion
+  - internal/testingtsupport
+  - matchers
+  - format
+  - matchers/support/goraph/bipartitegraph
+  - matchers/support/goraph/edge
+  - matchers/support/goraph/node
+  - matchers/support/goraph/util
+- name: github.com/op/go-logging
+  version: 970db520ece77730c7e4724c61121037378659d9
+- name: github.com/pivotal-golang/lager
+  version: 7639e31ce6622c55c15aa64144b85d5f4873d127
+- name: github.com/pivotalservices/gtils
+  version: 02f6e3fc7007ce437a04c201c60025dcda26fe04
+  subpackages:
+  - bosh
+  - command
+  - http
+  - log
+  - mock
+  - osutils
+  - persistence
+  - storage
+  - uaa
+- name: github.com/pkg/sftp
+  version: e84cc8c755ca39b7b64f510fe1fffc1b51f210a5
+- name: github.com/rlmcpherson/s3gof3r
+  version: 39f5507f61031141057f3f880d9fb9eb97b8afd7
+- name: github.com/technoweenie/multipartstreamer
+  version: a90a01d73ae432e2611d178c18367fbaa13e0154
+- name: github.com/xchapter7x/goutil
+  version: 046742e03686eda64c6ac938594120d7fb5b3ecc
+  subpackages:
+  - itertools
+- name: github.com/xchapter7x/lo
+  version: aa2602d0e8e8647f0ce7b53109b37040941915aa
+- name: golang.org/x/crypto
+  version: 285fb2ed20d1dc450fc743a1b3ff7c36bef372b9
+  subpackages:
+  - ssh
+  - curve25519
+- name: gopkg.in/yaml.v1
+  version: 9f9df34309c04878acc86042b16630b0f696e1de
+devImports: []

@@ -1,0 +1,63 @@
+hash: 9fa055f3f0b7f9e6aecfd1d8f1fef5db42e2deb2064a805c1c39836bae9845a0
+updated: 2016-05-13T12:27:01.934909214-04:00
+imports:
+- name: github.com/cloudfoundry-community/go-cfenv
+  version: e01ad520da25cfac51386ef5143fdc2268a6f3b9
+- name: github.com/hashicorp/go-plugin
+  version: cccb4a1328abbb89898f3ecf4311a05bddc4de6d
+- name: github.com/hashicorp/yamux
+  version: c8a8a076e0858546ae6e2ee189d94e78b9b881ce
+- name: github.com/kr/fs
+  version: 2788f0dbd16903de03cb8186e5c7d97b69ad387b
+- name: github.com/mitchellh/mapstructure
+  version: 740c764bc6149d3f1806231418adb9f52c11bcbf
+- name: github.com/op/go-logging
+  version: 970db520ece77730c7e4724c61121037378659d9
+- name: github.com/pivotal-golang/lager
+  version: 7639e31ce6622c55c15aa64144b85d5f4873d127
+- name: github.com/pivotalservices/cfbackup
+  version: e9ac914a3dc2d489ca579aab0830b2cf35052486
+  subpackages:
+  - tileregistry
+  - tiles/opsmanager
+- name: github.com/pivotalservices/cfops
+  version: 51722b51dc69dfdf76c9c056dce63ee8fd8474c0
+  subpackages:
+  - plugin/cfopsplugin
+- name: github.com/pivotalservices/cfops-rabbitmq-plugin
+  version: f46b9611e71d18710ea3cd994e64475e396d6fc6
+  subpackages:
+  - plugin
+- name: github.com/pivotalservices/gtils
+  version: 02f6e3fc7007ce437a04c201c60025dcda26fe04
+  subpackages:
+  - bosh
+  - command
+  - http
+  - osutils
+  - persistence
+  - storage
+  - log
+  - uaa
+- name: github.com/pkg/sftp
+  version: 9683e1ed9152e4fb052773355eb1b8cdcbac2058
+- name: github.com/rlmcpherson/s3gof3r
+  version: 39f5507f61031141057f3f880d9fb9eb97b8afd7
+- name: github.com/technoweenie/multipartstreamer
+  version: a90a01d73ae432e2611d178c18367fbaa13e0154
+- name: github.com/xchapter7x/goutil
+  version: 046742e03686eda64c6ac938594120d7fb5b3ecc
+  subpackages:
+  - itertools
+- name: github.com/xchapter7x/lo
+  version: aa2602d0e8e8647f0ce7b53109b37040941915aa
+- name: golang.org/x/crypto
+  version: 1e61df8d9ea476e2e1504cd9a32b40280c7c6c7e
+  subpackages:
+  - ssh
+  - curve25519
+  - ed25519
+  - ed25519/internal/edwards25519
+- name: gopkg.in/yaml.v1
+  version: 9f9df34309c04878acc86042b16630b0f696e1de
+devImports: []

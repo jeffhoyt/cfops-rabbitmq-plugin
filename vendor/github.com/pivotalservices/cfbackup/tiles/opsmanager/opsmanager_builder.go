@@ -2,14 +2,14 @@ package opsmanager
 
 import (
 	"github.com/pivotalservices/cfbackup"
-	"github.com/pivotalservices/cfops/tileregistry"
+	"github.com/pivotalservices/cfbackup/tileregistry"
 	"github.com/xchapter7x/lo"
 )
 
 //New -- builds a new ops manager object pre initialized
-func (s *OpsManagerBuilder) New(tileSpec tileregistry.TileSpec) (opsManagerTile tileregistry.Tile, err error) {
+func (s *OpsManagerBuilder) New(tileSpec tileregistry.TileSpec) (opsManagerTileCloser tileregistry.TileCloser, err error) {
 	var opsManager *OpsManager
-	opsManager, err = NewOpsManager(tileSpec.OpsManagerHost, tileSpec.AdminUser, tileSpec.AdminPass, tileSpec.OpsManagerUser, tileSpec.OpsManagerPass, tileSpec.ArchiveDirectory, tileSpec.CryptKey)
+	opsManager, err = NewOpsManager(tileSpec.OpsManagerHost, tileSpec.AdminUser, tileSpec.AdminPass, tileSpec.OpsManagerUser, tileSpec.OpsManagerPass, tileSpec.OpsManagerPassphrase, tileSpec.ArchiveDirectory, tileSpec.CryptKey)
 	opsManager.ClearBoshManifest = tileSpec.ClearBoshManifest
 
 	if installationSettings, err := opsManager.GetInstallationSettings(); err == nil {
@@ -23,6 +23,12 @@ func (s *OpsManagerBuilder) New(tileSpec tileregistry.TileSpec) (opsManagerTile 
 			lo.G.Debug("No IaaS PEM key found. Defaulting to using ssh username and password credentials")
 		}
 	}
-	opsManagerTile = opsManager
+	opsManagerTileCloser = struct {
+		tileregistry.Tile
+		tileregistry.Closer
+	}{
+		opsManager,
+		new(tileregistry.DoNothingCloser),
+	}
 	return
 }
