@@ -1,1 +1,0 @@
-${CFOPS_CRON} /root/scripts/run backup ${CFOPS_TILE} >>/root/pcfbackup/backup.log 2>&1
